@@ -1,9 +1,13 @@
-import http.server
-import socketserver
+from flask import Flask, request
 
-PORT = 8000
-Handler = http.server.SimpleHTTPRequestHandler
+app = Flask(__name__)
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at port {PORT}")
-    httpd.serve_forever()
+# Route pour recevoir les données
+@app.route("/metasploit", methods=["POST"])
+def receive_data():
+    data = request.data.decode('utf-8')
+    print(f"Données reçues : {data}")
+    return "Données reçues avec succès.", 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
